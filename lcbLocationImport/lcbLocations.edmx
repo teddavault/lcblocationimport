@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="lcbLocations.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="lcbLocationsStoreContainer">
+    <EntitySet Name="lcbCountries" EntityType="lcbLocations.Store.lcbCountries" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="lcbRegions" EntityType="lcbLocations.Store.lcbRegions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="lcbSubRegions" EntityType="lcbLocations.Store.lcbSubRegions" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="CountryRegion" Association="lcbLocations.Store.CountryRegion">
+      <End Role="Country" EntitySet="lcbCountries" />
+      <End Role="Region" EntitySet="lcbRegions" />
+    </AssociationSet>
+    <AssociationSet Name="lcbRegionlcbSubRegion" Association="lcbLocations.Store.lcbRegionlcbSubRegion">
+      <End Role="lcbRegion" EntitySet="lcbRegions" />
+      <End Role="lcbSubRegion" EntitySet="lcbSubRegions" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="lcbCountries">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="lcbcountry_id" Type="int" Nullable="false" />
+    <Property Name="lcbcountry_description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="last_updated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="lcbRegions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="lcbregion_id" Type="int" Nullable="false" />
+    <Property Name="lcbregion_description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="last_updated" Type="datetime" Nullable="false" />
+    <Property Name="CountryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="lcbSubRegions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="lcbsubregion_id" Type="int" Nullable="false" />
+    <Property Name="lcbsubregion_description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="last_updated" Type="datetime" Nullable="false" />
+    <Property Name="lcbRegionId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="CountryRegion">
+    <End Role="Country" Type="lcbLocations.Store.lcbCountries" Multiplicity="1" />
+    <End Role="Region" Type="lcbLocations.Store.lcbRegions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Region">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="lcbRegionlcbSubRegion">
+    <End Role="lcbRegion" Type="lcbLocations.Store.lcbRegions" Multiplicity="1" />
+    <End Role="lcbSubRegion" Type="lcbLocations.Store.lcbSubRegions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="lcbRegion">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="lcbSubRegion">
+        <PropertyRef Name="lcbRegionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="lcbLocations" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="lcbLocationsContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="lcbCountries" EntityType="lcbLocations.lcbCountry" />
+          <EntitySet Name="lcbRegions" EntityType="lcbLocations.lcbRegion" />
+          <AssociationSet Name="CountryRegion" Association="lcbLocations.CountryRegion">
+            <End Role="Country" EntitySet="lcbCountries" />
+            <End Role="Region" EntitySet="lcbRegions" />
+          </AssociationSet>
+          <EntitySet Name="lcbSubRegions" EntityType="lcbLocations.lcbSubRegion" />
+          <AssociationSet Name="lcbRegionlcbSubRegion" Association="lcbLocations.lcbRegionlcbSubRegion">
+            <End Role="lcbRegion" EntitySet="lcbRegions" />
+            <End Role="lcbSubRegion" EntitySet="lcbSubRegions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="lcbCountry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="lcbcountry_id" Nullable="false" />
+          <Property Type="String" Name="lcbcountry_description" Nullable="false" />
+          <Property Type="DateTime" Name="last_updated" Nullable="false" />
+          <NavigationProperty Name="lcbRegions" Relationship="lcbLocations.CountryRegion" FromRole="Country" ToRole="Region" />
+        </EntityType>
+        <EntityType Name="lcbRegion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="lcbregion_id" Nullable="false" />
+          <Property Type="String" Name="lcbregion_description" Nullable="false" />
+          <Property Type="DateTime" Name="last_updated" Nullable="false" />
+          <NavigationProperty Name="lcbCountry" Relationship="lcbLocations.CountryRegion" FromRole="Region" ToRole="Country" />
+          <Property Type="Int32" Name="CountryId" Nullable="false" />
+          <NavigationProperty Name="lcbSubRegions" Relationship="lcbLocations.lcbRegionlcbSubRegion" FromRole="lcbRegion" ToRole="lcbSubRegion" />
+        </EntityType>
+        <Association Name="CountryRegion">
+          <End Type="lcbLocations.lcbCountry" Role="Country" Multiplicity="1" />
+          <End Type="lcbLocations.lcbRegion" Role="Region" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Region">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="lcbSubRegion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="lcbsubregion_id" Nullable="false" />
+          <Property Type="String" Name="lcbsubregion_description" Nullable="false" />
+          <Property Type="DateTime" Name="last_updated" Nullable="false" />
+          <NavigationProperty Name="lcbRegion" Relationship="lcbLocations.lcbRegionlcbSubRegion" FromRole="lcbSubRegion" ToRole="lcbRegion" />
+          <Property Type="Int32" Name="lcbRegionId" Nullable="false" />
+        </EntityType>
+        <Association Name="lcbRegionlcbSubRegion">
+          <End Type="lcbLocations.lcbRegion" Role="lcbRegion" Multiplicity="1" />
+          <End Type="lcbLocations.lcbSubRegion" Role="lcbSubRegion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lcbRegion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="lcbSubRegion">
+              <PropertyRef Name="lcbRegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="lcbLocationsStoreContainer" CdmEntityContainer="lcbLocationsContainer">
+    <EntitySetMapping Name="lcbCountries">
+      <EntityTypeMapping TypeName="IsTypeOf(lcbLocations.lcbCountry)">
+        <MappingFragment StoreEntitySet="lcbCountries">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="lcbcountry_id" ColumnName="lcbcountry_id" />
+          <ScalarProperty Name="lcbcountry_description" ColumnName="lcbcountry_description" />
+          <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="lcbRegions">
+      <EntityTypeMapping TypeName="IsTypeOf(lcbLocations.lcbRegion)">
+        <MappingFragment StoreEntitySet="lcbRegions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="lcbregion_id" ColumnName="lcbregion_id" />
+          <ScalarProperty Name="lcbregion_description" ColumnName="lcbregion_description" />
+          <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="lcbSubRegions">
+      <EntityTypeMapping TypeName="IsTypeOf(lcbLocations.lcbSubRegion)">
+        <MappingFragment StoreEntitySet="lcbSubRegions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="lcbsubregion_id" ColumnName="lcbsubregion_id" />
+          <ScalarProperty Name="lcbsubregion_description" ColumnName="lcbsubregion_description" />
+          <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+          <ScalarProperty Name="lcbRegionId" ColumnName="lcbRegionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
